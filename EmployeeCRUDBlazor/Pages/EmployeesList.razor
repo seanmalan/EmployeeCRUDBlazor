@@ -1,0 +1,66 @@
+﻿@page "/Employees"
+@using EmployeeCRUDBlazor.Data
+@inject EmployeeService employeeService
+
+<NavLink class="nav-link" href="AddNewEmployee"> 
+<span class="oi oi-plus" aria-hidden="true">Add New Employee</span>
+
+</NavLink>
+
+
+<h3>EmployeesList</h3>
+
+@if (empObj is null)
+{
+    <p><em>Loading....</em></p>
+} else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Id</th>
+                <th>Employee Name</th>
+                
+                <th>Email Address</th>
+                <th>Designation</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in empObj)
+            {
+                <tr>
+                    <td>@emp.Id</td>
+                    <td>@emp.Fullname</td>
+                    
+                    <td>@emp.Email</td>
+                    <td>@emp.Designation</td>
+                    <td>@emp.Mobile</td>
+<td>
+                        <a class="nav-link btn btn-primary" href="EditEmployee/@emp.Id">
+                            <span class="oi oi-pencil" aria-hidden="true">Edit</span>
+                        </a>
+                        </td>
+
+                    <td>
+                        <a class="nav-link btn btn-danger" href="DeleteEmployee/@emp.Id">
+                            <span class="oi oi-pencil" aria-hidden="true">Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Employee> empObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        empObj = await Task.Run(() => employeeService.GetAllEmployees());
+
+
+    }
+}

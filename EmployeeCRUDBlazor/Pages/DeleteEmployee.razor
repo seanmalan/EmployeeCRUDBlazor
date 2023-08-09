@@ -1,0 +1,89 @@
+﻿@page "/DeleteEmployee/{Id}"
+@using EmployeeCRUDBlazor.Data
+@inject EmployeeService employeeService
+@inject NavigationManager NavigationManager
+
+
+<h3>Delete Employee</h3>
+<hr />
+
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="EmployeeId">Employee ID</label>
+                <label> @obj.Id </label>
+            </div>
+
+            <div class="form-group">
+                <label for="FirstName">First Name</label>
+                <label> @obj.FirstName </label>
+            </div>
+
+            <div class="form-group">
+                <label for="MiddleName">Middle Name</label>
+                <label> @obj.MiddleName </label>
+            </div>
+            <div class="form-group">
+                <label for="LastName">Last Name</label>
+                <label> @obj.LastName </label>
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <label> @obj.Email </label>
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number</label>
+                <label> @obj.Mobile </label>
+            </div>
+
+            <div class="form-group">
+                <label for="PostalCode">Postal Code</label>
+                <label> @obj.PostalCode </label>
+            </div>
+
+            <div class="form-group">
+                <label for="Address">Address</label>
+                <label> @obj.Address </label>
+            </div>
+
+            <div class="form-group">
+                <label for="Designation">Designation</label>
+                <label> @obj.Designation </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" @onclick="@DeleteEmployeeRecord" value="Delete Employee">Create</button>
+                <button type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    Employee obj = new Employee();
+
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => employeeService.GetEmployeeById(Convert.ToInt32(Id)));
+    }
+
+
+    protected async void DeleteEmployeeRecord()
+    {
+        await employeeService.DeleteEmployeeDetails(obj);
+        NavigationManager.NavigateTo("Employees");
+
+    }
+
+    protected async void Cancel() => NavigationManager.NavigateTo("/Employees");
+}
